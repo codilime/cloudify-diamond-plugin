@@ -65,10 +65,32 @@ def install(ctx, diamond_config, **kwargs):
                   interval=interval,
                   paths=paths)
 
+    collectors_path = paths['collectors']
+    collectors_configs_path = paths['collectors_config']
+
+    # Cloudify collectors
+    copy_content(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '..',
+            'collectors'
+        ),
+        collectors_path
+    )
+    copy_content(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)),
+            '..',
+            'collectors_config'
+        ),
+        collectors_configs_path
+    )
+
+    # Diamond deafault collectors
     copy_content(os.path.join(sys.prefix, 'share', 'diamond', 'collectors'),
-                 paths['collectors'])
+                 collectors_path)
     copy_content(os.path.join(sys.prefix, 'etc', 'diamond', 'collectors'),
-                 paths['collectors_config'])
+                 collectors_configs_path)
 
     disable_all_collectors(paths['collectors_config'])
 
